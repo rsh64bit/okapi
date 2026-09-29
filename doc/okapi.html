@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Okapi RTOS — building a RISC-V RTOS in Rust</title>
+<style>
+  :root{
+    --bg:#0f1419; --panel:#161c24; --panel-2:#1b232d; --line:#2a3442; --line-2:#3a4757;
+    --fg:#e8edf2; --fg-dim:#9aa7b5; --fg-faint:#6b7889;
+    --accent:#d98230; --accent-2:#4a9fd8; --ok:#5fb87a; --up:#8b7cc8;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media print{
+    :root{--bg:#fff;--panel:#fff;--panel-2:#f4f7fa;--line:#c8d1db;--line-2:#aab6c4;
+          --fg:#12181f;--fg-dim:#48566a;--fg-faint:#6b7889;}
+    @page{size:1600px 900px;margin:0;}
+    body{padding:0;display:block;}
+    .slide{display:flex !important;page-break-after:always;break-after:page;
+      border:none;border-radius:0;max-width:none;margin:0;}
+    .slide:last-of-type{page-break-after:auto;break-after:auto;}
+    nav{display:none !important;}
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--fg);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;min-height:100%;}
+  body{display:flex;align-items:center;justify-content:center;padding:20px;}
+
+  .slide{
+    width:100%;max-width:1600px;aspect-ratio:16/9;min-height:700px;
+    background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    padding:36px 46px 26px;display:none;flex-direction:column;
+  }
+  .slide.active{display:flex;}
+
+  nav{position:fixed;bottom:16px;right:20px;display:flex;align-items:center;gap:10px;
+    background:var(--panel);border:1px solid var(--line);border-radius:20px;
+    padding:6px 8px 6px 14px;font-size:11.5px;color:var(--fg-dim);z-index:10;}
+  nav .cnt{font-family:var(--mono);font-size:11px;}
+  nav button{background:var(--panel-2);border:1px solid var(--line);color:var(--fg);
+    border-radius:13px;width:26px;height:22px;cursor:pointer;font-size:12px;line-height:1;}
+  nav button:hover{border-color:var(--line-2);}
+  nav .hint{font-size:10px;color:var(--fg-faint);border-left:1px solid var(--line);
+    padding-left:10px;margin-left:2px;}
+
+  header{display:flex;justify-content:space-between;align-items:flex-start;
+    border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:22px;}
+  .brand{display:flex;align-items:center;gap:14px;}
+  .okapi-icon{flex-shrink:0;width:56px;height:56px;background:var(--panel);
+    border:1px solid var(--line);border-radius:10px;padding:6px;}
+  h1{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.15;}
+  h1 span{color:var(--accent);}
+  .sub{margin-top:7px;font-size:13.5px;color:var(--fg-dim);}
+  .sub code{font-family:var(--mono);font-size:12px;color:var(--fg);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:1px 6px;}
+  .hsub{font-size:12.5px;color:var(--fg-dim);text-align:right;flex-shrink:0;padding-left:26px;}
+  .hsub b{color:var(--fg);font-weight:600;}
+
+  /* ================= SLIDE 1: workflow ================= */
+  .flow{flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;justify-content:center;}
+  .row{display:flex;align-items:stretch;gap:8px;}
+  .row.rev{flex-direction:row-reverse;}
+  .node{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);
+    border-top:3px solid var(--accent-2);border-radius:8px;padding:12px 14px 10px;
+    display:flex;flex-direction:column;}
+  .row.rev .node{border-top-color:var(--accent);}
+  .node-n{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--fg-faint);
+    margin-bottom:4px;}
+  .node-t{font-size:13px;font-weight:640;letter-spacing:-.005em;margin-bottom:4px;line-height:1.25;}
+  .node-d{font-size:10.8px;color:var(--fg-dim);line-height:1.4;}
+  .node-d code{font-family:var(--mono);font-size:10px;color:var(--fg);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:0 4px;}
+  .arr{flex:0 0 22px;display:flex;align-items:center;justify-content:center;
+    color:var(--fg-faint);font-size:18px;}
+  .row.rev .arr{transform:scaleX(-1);}
+  .drop{display:flex;justify-content:flex-end;padding-right:7%;margin:1px 0;}
+  .drop .arr{transform:rotate(90deg);}
+
+  footer{margin-top:20px;padding-top:14px;border-top:1px solid var(--line);
+    display:flex;align-items:center;gap:16px;justify-content:space-between;}
+  .foot-l{font-size:11px;color:var(--fg-faint);}
+  .foot-l b{color:var(--fg-dim);}
+</style>
+</head>
+<body>
+
+<div class="slide active">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Building a real-time operating system for <code>RISC-V</code> in Rust — roadmap</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Toolchain:</b> Andes RISC-V GCC<br><b>Language:</b> Rust (no_std)</div>
+  </header>
+
+  <div class="flow">
+    <div class="row">
+      <div class="node">
+        <div class="node-n">01</div>
+        <div class="node-t">Set up Andes GCC toolchain</div>
+        <div class="node-d">Install Andes' <code>riscv32-elf-</code>/<code>riscv64-elf-</code> GCC (AndeSight / RISC-V bare-metal SDK), plus Rust nightly target <code>riscv32imac-unknown-none-elf</code> for the kernel crate.</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node">
+        <div class="node-n">02</div>
+        <div class="node-t">Boot &amp; entry sequence</div>
+        <div class="node-d">Write <code>_start</code> and the linker script (<code>.ld</code>) targeting the Andes core memory map; set stack pointer, clear <code>.bss</code>, set <code>mtvec</code>, jump into Rust <code>#[no_main]</code>.</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node">
+        <div class="node-n">03</div>
+        <div class="node-t">Trap / interrupt handling</div>
+        <div class="node-d">Handle machine-mode traps via <code>mcause</code>/<code>mepc</code>; wire Andes' vectored PLIC/CLINT (and AndeStar extensions if targeting an N/D/A45 core) for timer &amp; external IRQs.</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node">
+        <div class="node-n">04</div>
+        <div class="node-t">Task / thread abstraction</div>
+        <div class="node-d">Define a <code>Task</code> struct with its own stack + saved context; implement the context-switch routine in GCC-compatible inline/naked asm callable from Rust.</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node">
+        <div class="node-n">05</div>
+        <div class="node-t">Scheduler</div>
+        <div class="node-d">Preemptive fixed-priority or round-robin scheduler driven off the machine timer (<code>mtimecmp</code>); add priority queues, then rate-monotonic/EDF later.</div>
+      </div>
+    </div>
+
+    <div class="drop"><div class="arr">↳</div></div>
+
+    <div class="row rev">
+      <div class="node">
+        <div class="node-n">10</div>
+        <div class="node-t">Test, validate &amp; benchmark</div>
+        <div class="node-d">Boot on Andes QEMU model / AndeSim and real Andes silicon; measure interrupt latency &amp; context-switch time; automate boot tests in CI.</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node">
+        <div class="node-n">09</div>
+        <div class="node-t">Syscall / API surface</div>
+        <div class="node-d">Define the <code>ecall</code> syscall ABI for task create, delay, IPC, I/O; expose a safe Rust API on top for application code.</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node">
+        <div class="node-n">08</div>
+        <div class="node-t">HAL &amp; driver layer</div>
+        <div class="node-d">Abstract UART/timer/GPIO/PLIC behind a HAL so the kernel targets multiple Andes-based boards without core changes.</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node">
+        <div class="node-n">07</div>
+        <div class="node-t">Memory management</div>
+        <div class="node-d">Static/pool allocator for kernel objects &amp; per-task stacks; optional PMP-based memory protection for isolation.</div>
+      </div>
+      <div class="arr">→</div>
+      <div class="node">
+        <div class="node-n">06</div>
+        <div class="node-t">Synchronization primitives</div>
+        <div class="node-d">Mutexes, semaphores, message queues safe under Rust ownership; atomics or interrupt-disable critical sections for mutual exclusion.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — build workflow · slide 1 of N</div>
+    <div class="foot-l">Andes RISC-V GCC toolchain + Rust embedded conventions</div>
+  </footer>
+</div>
+
+<nav>
+  <button id="prev">‹</button>
+  <span class="cnt"><span id="cur">1</span>/<span id="tot">1</span></span>
+  <button id="next">›</button>
+  <span class="hint">← → to navigate</span>
+</nav>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let idx = 0;
+  document.getElementById('tot').textContent = slides.length;
+  function show(i){
+    slides[idx].classList.remove('active');
+    idx = (i + slides.length) % slides.length;
+    slides[idx].classList.add('active');
+    document.getElementById('cur').textContent = idx + 1;
+  }
+  document.getElementById('prev').onclick = () => show(idx - 1);
+  document.getElementById('next').onclick = () => show(idx + 1);
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') show(idx + 1);
+    if (e.key === 'ArrowLeft') show(idx - 1);
+  });
+</script>
+
+</body>
+</html>
