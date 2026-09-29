@@ -81,6 +81,23 @@
     display:flex;align-items:center;gap:16px;justify-content:space-between;}
   .foot-l{font-size:11px;color:var(--fg-faint);}
   .foot-l b{color:var(--fg-dim);}
+
+  /* ================= SLIDE 2: rust toolchain setup ================= */
+  .steps{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;min-height:0;}
+  .step{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--accent-2);
+    border-radius:8px;padding:13px 15px 11px;display:flex;flex-direction:column;min-height:0;}
+  .step.warn{border-top-color:var(--accent);}
+  .step-n{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--fg-faint);
+    margin-bottom:5px;}
+  .step-t{font-size:14px;font-weight:640;letter-spacing:-.005em;margin-bottom:7px;}
+  .step-d{font-size:11px;color:var(--fg-dim);line-height:1.45;flex:1;}
+  .step-d code{font-family:var(--mono);font-size:10px;color:var(--fg);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:0 4px;}
+  .step pre{margin-top:8px;background:var(--panel-2);border:1px solid var(--line);
+    border-radius:6px;padding:8px 10px;font-family:var(--mono);font-size:9.6px;color:var(--fg);
+    line-height:1.5;overflow:auto;white-space:pre-wrap;}
+  .step-note{margin-top:8px;font-size:10px;color:var(--fg-faint);line-height:1.4;
+    border-left:2px solid var(--accent);padding-left:8px;}
 </style>
 </head>
 <body>
@@ -191,6 +208,112 @@
   <footer>
     <div class="foot-l"><b>Okapi RTOS</b> — build workflow · slide 1 of N</div>
     <div class="foot-l">Andes RISC-V GCC toolchain + Rust embedded conventions</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Rust toolchain setup for the <code>Andes N25F</code> (32-bit RISC-V)</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Core:</b> Andes N25F (RV32IMAFC*)<br><b>ABI:</b> ilp32 / soft-float first</div>
+  </header>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">01</div>
+      <div class="step-t">Confirm ISA extensions</div>
+      <div class="step-d">N25F configs vary — verify exactly which of <code>M</code>/<code>A</code>/<code>F</code>/<code>C</code> are enabled from the SoC datasheet before picking a target. Drives every choice below.</div>
+      <div class="step-note">Assuming an extension the core lacks → illegal instruction at runtime.</div>
+    </div>
+    <div class="step">
+      <div class="step-n">02</div>
+      <div class="step-t">Rust target &amp; toolchain</div>
+      <div class="step-d">Start with a stock soft-float target to de-risk bring-up:</div>
+      <pre>rustup target add \
+  riscv32imac-unknown-none-elf
+rustup component add llvm-tools-preview
+cargo install cargo-binutils</pre>
+    </div>
+    <div class="step">
+      <div class="step-n">03</div>
+      <div class="step-t">Linker config</div>
+      <div class="step-d"><code>.cargo/config.toml</code> — use <code>rust-lld</code> (ships with rustc), point at <code>riscv-rt</code>'s linker script:</div>
+      <pre>[build]
+target = "riscv32imac-unknown-none-elf"
+[target.riscv32imac-unknown-none-elf]
+rustflags = ["-C","link-arg=-Tlink.x"]</pre>
+    </div>
+    <div class="step">
+      <div class="step-n">04</div>
+      <div class="step-t">Runtime crates</div>
+      <div class="step-d">Startup/vector table + CSR access:</div>
+      <pre>[dependencies]
+riscv = "0.11"
+riscv-rt = "0.12"
+panic-halt = "0.2"</pre>
+    </div>
+    <div class="step">
+      <div class="step-n">05</div>
+      <div class="step-t">Memory map</div>
+      <div class="step-d"><code>riscv-rt</code> needs a <code>memory.x</code> with real FLASH/RAM regions pulled from the Andes SoC's memory map — no generic default exists.</div>
+      <div class="step-note">Placeholder addresses will link but won't boot on real silicon.</div>
+    </div>
+    <div class="step warn">
+      <div class="step-n">06</div>
+      <div class="step-t">Andes interrupt model</div>
+      <div class="step-d">N25 uses <b>AndeStar V5</b> trap/CSR extensions (vectored <code>mtvt</code>, <code>mmisc_ctl</code>), not a stock SiFive CLINT/PLIC. Stock <code>riscv-rt</code> trap handling may need patching to vector correctly.</div>
+    </div>
+    <div class="step warn">
+      <div class="step-n">07</div>
+      <div class="step-t">Hardware float (later)</div>
+      <div class="step-d">No tier-2 target matches <code>rv32imafc</code>/<code>ilp32f</code> exactly. Requires a custom target-spec JSON + nightly <code>-Z build-std</code> once soft-float bring-up works.</div>
+      <pre>rustc -Z unstable-options \
+  --target riscv32imac-unknown-none-elf \
+  --print target-spec-json \
+  > riscv32imafc.json
+# edit: features "+m,+a,+f,+c"
+#       llvm-abiname "ilp32f"</pre>
+    </div>
+    <div class="step">
+      <div class="step-n">08</div>
+      <div class="step-t">Validate before silicon</div>
+      <div class="step-d">Prove the build/link pipeline with QEMU's generic <code>virt</code> machine (approximate, not Andes-exact) before flashing real hardware.</div>
+      <pre>qemu-system-riscv32 -machine virt \
+  -nographic -kernel target/.../fw</pre>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — Rust/RISC-V toolchain (N25F) · slide 2 of N</div>
+    <div class="foot-l">*confirm exact extensions per SoC config before building</div>
   </footer>
 </div>
 
