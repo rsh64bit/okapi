@@ -1,0 +1,7 @@
+# Rust / Cargo build artifacts
+target/
+
+# Backup and editor files
+*.bak
+*~
+*.swp

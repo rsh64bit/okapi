@@ -120,6 +120,109 @@
   .legend{display:flex;gap:18px;margin-top:2px;font-size:10px;color:var(--fg-dim);}
   .legend span{display:inline-flex;align-items:center;gap:5px;}
   .legend i{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  /* ================= SLIDES 4-6: riscv-rt interrupt walkthrough ================= */
+  .crumb{font-family:var(--mono);font-size:10.5px;color:var(--fg-faint);margin-bottom:10px;
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .crumb b{color:var(--accent-2);font-weight:650;}
+  .crumb .sep{color:var(--line-2);}
+
+  .chain{flex:1;display:flex;flex-direction:column;gap:10px;min-height:0;overflow:auto;}
+  .cstep{display:flex;gap:12px;align-items:flex-start;}
+  .cstep-badge{flex:0 0 26px;height:26px;border-radius:50%;background:var(--panel-2);
+    border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent-2);margin-top:1px;}
+  .cstep-body{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:10px 14px 10px;}
+  .cstep-t{font-size:13px;font-weight:640;margin-bottom:5px;}
+  .cstep-t code{font-family:var(--mono);font-size:11.5px;color:var(--accent-2);}
+  .cstep-d{font-size:10.8px;color:var(--fg-dim);line-height:1.45;margin-bottom:6px;}
+  .cstep-d code{font-family:var(--mono);font-size:10px;color:var(--fg);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:0 4px;}
+  .cstep pre{margin-top:4px;background:var(--panel-2);border:1px solid var(--line);
+    border-radius:6px;padding:8px 11px;font-family:var(--mono);font-size:9.8px;color:var(--fg);
+    line-height:1.5;overflow:auto;white-space:pre-wrap;}
+  .cstep .src{margin-top:5px;font-family:var(--mono);font-size:9px;color:var(--fg-faint);}
+  .cstep-connector{flex:0 0 26px;display:flex;justify-content:center;color:var(--line-2);
+    font-size:13px;margin:-4px 0 -4px 0;}
+
+  .twocol{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:14px;min-height:0;}
+  .col{display:flex;flex-direction:column;gap:10px;min-height:0;overflow:auto;}
+  .col-h{font-size:12px;font-weight:650;color:var(--fg);margin-bottom:2px;
+    display:flex;align-items:center;gap:8px;}
+  .col-h .tag{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:2px 7px;
+    border-radius:10px;background:var(--panel-2);border:1px solid var(--line);color:var(--fg-dim);}
+  .col-h.warn .tag{color:var(--accent);border-color:var(--accent);}
+  .col-h.ok .tag{color:var(--ok);border-color:var(--ok);}
+
+  .mini{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:10px 13px 9px;}
+  .mini-t{font-size:11.5px;font-weight:640;margin-bottom:4px;}
+  .mini-t code{font-family:var(--mono);color:var(--accent-2);}
+  .mini-d{font-size:10.3px;color:var(--fg-dim);line-height:1.42;}
+  .mini-d code{font-family:var(--mono);font-size:9.6px;color:var(--fg);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:0 4px;}
+  .mini pre{margin-top:6px;background:var(--panel-2);border:1px solid var(--line);
+    border-radius:6px;padding:7px 10px;font-family:var(--mono);font-size:9.4px;color:var(--fg);
+    line-height:1.48;overflow:auto;white-space:pre-wrap;}
+
+  /* ================= SLIDES 7-15: PLIC decision ================= */
+  .verdict{display:flex;align-items:stretch;gap:0;margin-bottom:14px;
+    background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--ok);
+    border-radius:8px;padding:12px 16px;}
+  .verdict-k{flex:0 0 112px;font-family:var(--mono);font-size:10px;font-weight:700;
+    color:var(--ok);text-transform:uppercase;letter-spacing:.05em;padding-top:2px;}
+  .verdict-v{flex:1;font-size:13.5px;font-weight:640;line-height:1.4;letter-spacing:-.005em;}
+  .verdict-v code{font-family:var(--mono);font-size:12.5px;color:var(--accent-2);}
+  .verdict-v em{font-style:normal;color:var(--fg-dim);font-weight:400;}
+  .verdict.no{border-left-color:var(--accent);}
+  .verdict.no .verdict-k{color:var(--accent);}
+
+  .threecol{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;min-height:0;}
+
+  .cmp{flex:1;min-height:0;overflow:auto;border:1px solid var(--line);border-radius:8px;}
+  table.cmp-t{width:100%;border-collapse:collapse;font-size:10.6px;}
+  table.cmp-t th{background:var(--panel-2);text-align:left;padding:8px 12px;font-size:10px;
+    font-weight:700;color:var(--fg-dim);text-transform:uppercase;letter-spacing:.04em;
+    border-bottom:1px solid var(--line-2);position:sticky;top:0;}
+  table.cmp-t td{padding:8px 12px;border-bottom:1px solid var(--line);color:var(--fg-dim);
+    line-height:1.42;vertical-align:top;}
+  table.cmp-t tr:last-child td{border-bottom:none;}
+  table.cmp-t td:first-child{color:var(--fg);font-weight:600;width:19%;}
+  table.cmp-t td code,table.cmp-t th code{font-family:var(--mono);font-size:9.6px;color:var(--fg);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:0 4px;}
+  table.cmp-t .y{color:var(--ok);font-weight:650;}
+  table.cmp-t .n{color:var(--accent);font-weight:650;}
+  table.cmp-t tr.hl td{background:rgba(217,130,48,.07);}
+
+  .tree{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:13px 16px;font-family:var(--mono);font-size:11px;line-height:1.75;color:var(--fg-dim);
+    overflow:auto;}
+  .tree b{color:var(--fg);font-weight:600;}
+  .tree .c{color:var(--fg-faint);}
+  .tree .own{color:var(--up);font-weight:600;}
+  .tree .ext{color:var(--accent-2);font-weight:600;}
+
+  .pill{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;
+    padding:1.5px 7px;border-radius:9px;margin-left:6px;vertical-align:1px;
+    background:var(--panel-2);border:1px solid var(--line);color:var(--fg-dim);}
+  .pill.own{color:var(--up);border-color:var(--up);}
+  .pill.ext{color:var(--accent-2);border-color:var(--accent-2);}
+  .pill.warn{color:var(--accent);border-color:var(--accent);}
+  .pill.ok{color:var(--ok);border-color:var(--ok);}
+
+  .ckl{display:flex;flex-direction:column;gap:9px;}
+  .ck{display:flex;gap:11px;align-items:flex-start;background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:10px 13px;}
+  .ck-box{flex:0 0 17px;height:17px;border:1.5px solid var(--line-2);border-radius:4px;
+    margin-top:1px;}
+  .ck-b{flex:1;min-width:0;}
+  .ck-t{font-size:11.8px;font-weight:640;margin-bottom:3px;}
+  .ck-t code{font-family:var(--mono);font-size:10.8px;color:var(--accent-2);}
+  .ck-d{font-size:10.3px;color:var(--fg-dim);line-height:1.42;}
+  .ck-d code{font-family:var(--mono);font-size:9.6px;color:var(--fg);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:3px;padding:0 4px;}
+  .ck-src{margin-top:4px;font-family:var(--mono);font-size:9px;color:var(--fg-faint);}
 </style>
 </head>
 <body>
@@ -228,7 +331,7 @@
   </div>
 
   <footer>
-    <div class="foot-l"><b>Okapi RTOS</b> — build workflow · slide 1 of N</div>
+    <div class="foot-l"><b>Okapi RTOS</b> — build workflow · slide 1 of 15</div>
     <div class="foot-l">Andes RISC-V GCC toolchain + Rust embedded conventions</div>
   </footer>
 </div>
@@ -298,8 +401,8 @@ rustflags = ["-C","link-arg=-Tlink.x"]</pre>
       <div class="step-t">Runtime crates</div>
       <div class="step-d">Startup/vector table + CSR access:</div>
       <pre>[dependencies]
-riscv = "0.11"
-riscv-rt = "0.12"
+riscv = "0.16"
+riscv-rt = "0.18"
 panic-halt = "0.2"</pre>
     </div>
     <div class="step">
@@ -334,7 +437,7 @@ panic-halt = "0.2"</pre>
   </div>
 
   <footer>
-    <div class="foot-l"><b>Okapi RTOS</b> — Rust/RISC-V toolchain (N25F) · slide 2 of N</div>
+    <div class="foot-l"><b>Okapi RTOS</b> — Rust/RISC-V toolchain (N25F) · slide 2 of 15</div>
     <div class="foot-l">*confirm exact extensions per SoC config before building</div>
   </footer>
 </div>
@@ -450,8 +553,1063 @@ panic-halt = "0.2"</pre>
   </div>
 
   <footer>
-    <div class="foot-l"><b>Okapi RTOS</b> — architecture: crates vs. kernel · slide 3 of N</div>
+    <div class="foot-l"><b>Okapi RTOS</b> — architecture: crates vs. kernel · slide 3 of 15</div>
     <div class="foot-l">no crate provides scheduling, tasks, syscalls, or memory management — that is Okapi</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Crate walkthrough — <code>riscv-rt</code> interrupt support (boot → trap)</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Crate:</b> riscv-rt 0.18.0<br><b>Focus:</b> reset → mtvec → trap dispatch</div>
+  </header>
+
+  <div class="crumb"><b>riscv-rt</b><span class="sep">/</span>src/asm.rs<span class="sep">+</span>src/lib.rs<span class="sep">·</span>boot &amp; direct-mode trap entry</div>
+
+  <div class="chain">
+    <div class="cstep">
+      <div class="cstep-badge">1</div>
+      <div class="cstep-body">
+        <div class="cstep-t">Reset → <code>_start</code> (assembly, asm.rs)</div>
+        <div class="cstep-d">Sets stack pointer, clears <code>.bss</code>, copies <code>.data</code> from flash to RAM, then calls <code>start_rust</code>.</div>
+      </div>
+    </div>
+    <div class="cstep-connector">↓</div>
+
+    <div class="cstep">
+      <div class="cstep-badge">2</div>
+      <div class="cstep-body">
+        <div class="cstep-t"><code>start_rust(a0, a1, a2)</code> — lib.rs:761</div>
+        <div class="cstep-d">Runs optional <code>__post_init</code>, then calls <code>_setup_interrupts(a0)</code>, then jumps to your <code>hal_main</code>/<code>#[entry]</code>.</div>
+        <pre>_setup_interrupts(a0);
+hal_main(a0, a1, a2);</pre>
+      </div>
+    </div>
+    <div class="cstep-connector">↓</div>
+
+    <div class="cstep">
+      <div class="cstep-badge">3</div>
+      <div class="cstep-body">
+        <div class="cstep-t"><code>default_setup_interrupts()</code> — lib.rs:793</div>
+        <div class="cstep-d">Writes <code>mtvec</code>. Direct mode (default): points at <code>_start_trap</code>, one shared entry for every trap. Vectored mode (<code>v-trap</code> feature): points at <code>_vector_table</code> instead.</div>
+        <pre>Xtvec::new(_start_trap as usize, TrapMode::Direct);
+xtvec::write(xtvec_val);</pre>
+        <div class="src">Overridable: enable <code>custom-setup-interrupts</code> + <code>#[setup_interrupts]</code> to replace entirely (e.g. to also touch Andes <code>mmisc_ctl</code>).</div>
+      </div>
+    </div>
+    <div class="cstep-connector">↓</div>
+
+    <div class="cstep">
+      <div class="cstep-badge">4</div>
+      <div class="cstep-body">
+        <div class="cstep-t">Your <code>#[entry] fn main() -&gt; !</code> runs</div>
+        <div class="cstep-d">Hardware is now initialized and interrupts are configured. This is the handoff point into Okapi — everything from here is kernel code, not runtime code.</div>
+      </div>
+    </div>
+    <div class="cstep-connector">↓ (later, a trap fires)</div>
+
+    <div class="cstep">
+      <div class="cstep-badge">5</div>
+      <div class="cstep-body">
+        <div class="cstep-t">Trap → <code>_start_trap</code> (asm) → <code>start_trap_rust</code> — lib.rs:890</div>
+        <div class="cstep-d">Registers saved into a <code>TrapFrame</code>, then <code>mcause</code> is read and split into interrupt vs. exception:</div>
+        <pre>match xcause::read().cause() {
+    Trap::Interrupt(code) => _dispatch_core_interrupt(code),
+    Trap::Exception(code) => _dispatch_exception(&amp;*trap_frame, code),
+}</pre>
+        <div class="src">Always runs this way when <code>v-trap</code> is off — not itself feature-gated.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — riscv-rt crate walkthrough (1/3): boot → trap entry · slide 4 of 15</div>
+    <div class="foot-l">next: how <code>_dispatch_core_interrupt</code> is actually generated</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Crate walkthrough — where <code>_dispatch_core_interrupt</code> actually comes from</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Crates:</b> riscv-rt + riscv-macros<br><b>Key fact:</b> it's generated, not hand-written</div>
+  </header>
+
+  <div class="crumb"><b>riscv-rt</b>/src/interrupts.rs<span class="sep">→</span><b>riscv</b>/#[pac_enum]<span class="sep">→</span><b>riscv-macros</b>/src/riscv.rs<span class="sep">·</span>macro expansion chain</div>
+
+  <div class="twocol">
+    <div class="col">
+      <div class="col-h">What you write / what ships <span class="tag">interrupts.rs</span></div>
+      <div class="mini">
+        <div class="mini-t">The entire module is just an enum</div>
+        <div class="mini-d">Standard RISC-V cause codes only — nothing Andes-specific:</div>
+        <pre>#[riscv::pac_enum(unsafe CoreInterruptNumber)]
+enum Interrupt {
+    SupervisorSoft = 1,
+    MachineSoft = 3,
+    SupervisorTimer = 5,
+    MachineTimer = 7,
+    SupervisorExternal = 9,
+    MachineExternal = 11,
+}</pre>
+      </div>
+      <div class="mini">
+        <div class="mini-t">The doc comment says it outright</div>
+        <div class="mini-d">"If your target has custom core interrupt sources... you may need to opt out this module. To do so, activate the <code>custom-interrupts</code> feature." — this is exactly the Andes AndeStar V5 situation.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-h ok">What <code>#[pac_enum]</code> expands it into <span class="tag">generated</span></div>
+      <div class="mini">
+        <div class="mini-t">riscv-macros/src/riscv.rs:262-285</div>
+        <div class="mini-d">The macro emits a lookup table + the dispatch function itself:</div>
+        <pre>pub static __CORE_INTERRUPTS:
+  [Option&lt;unsafe extern "C" fn()&gt;; N] = [ ... ];
+
+#[no_mangle]
+unsafe extern "C" fn _dispatch_core_interrupt(code: usize) {
+    extern "C" { fn DefaultHandler(); }
+    match __CORE_INTERRUPTS.get(code) {
+        Some(Some(handler)) => handler(),
+        _ => DefaultHandler(),
+    }
+}</pre>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Net effect</div>
+        <div class="mini-d">Array lookup by raw <code>mcause</code> code → call registered handler → else <code>DefaultHandler()</code>. No AndeStar semantics anywhere in this chain.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — riscv-rt crate walkthrough (2/3): macro-generated dispatch · slide 5 of 15</div>
+    <div class="foot-l">next: the actual override mechanism &amp; the v-trap alternative</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Crate walkthrough — the override point, and the <code>v-trap</code> alternative</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Feature:</b> custom-interrupts<br><b>Alt:</b> v-trap (standard vectored, not AndeStar)</div>
+  </header>
+
+  <div class="crumb"><b>riscv-rt</b> feature flags<span class="sep">·</span>lib.rs:585-620<span class="sep">·</span>what Andes support actually requires</div>
+
+  <div class="twocol">
+    <div class="col">
+      <div class="col-h warn"><code>custom-interrupts</code> <span class="tag">the real hook</span></div>
+      <div class="mini">
+        <div class="mini-t">Cargo.toml</div>
+        <pre>[dependencies.riscv-rt]
+version = "0.18"
+features = ["custom-interrupts"]</pre>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Effect (lib.rs:718-719)</div>
+        <div class="mini-d">Excludes the entire <code>interrupts</code> module — enum, <code>__CORE_INTERRUPTS</code> table, generated <code>_dispatch_core_interrupt</code> all disappear from the build.</div>
+        <pre>#[cfg(not(feature = "custom-interrupts"))]
+pub mod interrupts;   // gone when the feature is on</pre>
+      </div>
+      <div class="mini">
+        <div class="mini-t">What you must then supply</div>
+        <div class="mini-d"><code>start_trap_rust</code> still calls <code>_dispatch_core_interrupt(code)</code> as <code>extern "C"</code> — link fails without your own definition:</div>
+        <pre>#[no_mangle]
+unsafe extern "C" fn _dispatch_core_interrupt(code: usize) {
+    // your AndeStar-aware routing here —
+    // interpret `code` under AndeStar semantics
+}</pre>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-h"><code>v-trap</code> <span class="tag">standard vectored, not mtvt</span></div>
+      <div class="mini">
+        <div class="mini-t">What it changes</div>
+        <div class="mini-d"><code>_setup_interrupts</code> sets <code>mtvec</code> to <code>Vectored</code> mode pointing at a generated <code>_vector_table</code> — a list of <code>j _start_INTERRUPT_trap</code> jumps, one per cause code.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Why it isn't a drop-in AndeStar fix</div>
+        <div class="mini-d">RISC-V standard vectored mode computes the target as <code>mtvec_base + 4×cause</code> — hardware-computed offset into one table. AndeStar's <code>mtvt</code> is a <i>separate</i> base-address CSR with its own table layout. Same idea, different mechanism.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Bottom line</div>
+        <div class="mini-d">Worth testing in isolation, but likely still needs custom code for true AndeStar vectoring — <code>custom-interrupts</code> is the dependable path today.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — riscv-rt crate walkthrough (3/3): override &amp; v-trap · slide 6 of 15</div>
+    <div class="foot-l">see doc/startup.md for the full narrative + source line references</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">The question — <code>riscv-rt</code>, a PLIC crate, or write our own?</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Need:</b> Andes PLIC interrupt controller<br><b>Decision:</b> own driver inside Okapi</div>
+  </header>
+
+  <div class="crumb"><b>decision record</b><span class="sep">·</span>interrupt controller sourcing<span class="sep">·</span>2026-10-01</div>
+  <div class="verdict">
+    <div class="verdict-k">Verdict</div>
+    <div class="verdict-v">Keep <code>riscv-rt</code> for trap entry. Write the Andes PLIC as our own module inside Okapi.
+      <em>— do not fork riscv-rt, do not adopt a generic PLIC crate.</em></div>
+  </div>
+
+  <div class="threecol">
+    <div class="mini">
+      <div class="mini-t">1 · <code>riscv-rt</code> owns trap entry, not routing</div>
+      <div class="mini-d">It gives reset, <code>.data</code>/<code>.bss</code> init, <code>mtvec</code> setup and <code>mcause</code> dispatch — the <b>CLINT-level</b> world. It stops at <i>&ldquo;an external interrupt arrived&rdquo;</i> (<code>MachineExternal</code>, cause 11) by design.</div>
+      <div class="mini-d" style="margin-top:7px">Deciding <i>which</i> of 50+ device sources fired, at what priority, under what threshold, is the PLIC's job — intentionally out of scope for the runtime crate.</div>
+    </div>
+    <div class="mini">
+      <div class="mini-t">2 · The Andes PLIC is not the standard PLIC</div>
+      <div class="mini-d">Differences are real, not cosmetic: a <code>PLIC</code>&nbsp;+&nbsp;<code>PLIC_SW</code> pair, vendor base addresses (not SiFive's <code>0x0C00_0000</code>), and a <b>preemptive priority / nested-interrupt</b> scheme driven by vendor CSRs the standard spec has no notion of.</div>
+      <div class="mini-d" style="margin-top:7px">A generic crate models the standard map and gives us <b>nothing</b> for the Andes-specific parts.</div>
+    </div>
+    <div class="mini">
+      <div class="mini-t">3 · For an OS, the PLIC is a kernel subsystem</div>
+      <div class="mini-d">Okapi is at <code>main.rs</code> with an empty <code>loop {}</code> today. The PLIC becomes load-bearing for the scheduler (timer-tick preemption), the device model, and the IRQ-masking / critical-section primitives.</div>
+      <div class="mini-d" style="margin-top:7px">That is architecture to <b>own and shape</b>, not inherit from a crate designed for single-app bare-metal firmware.</div>
+    </div>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (1/9): the question &amp; the verdict · slide 7 of 15</div>
+    <div class="foot-l">three layers — runtime crate, vendor controller, kernel subsystem — only one is riscv-rt’s</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Layer map — where the PLIC actually sits</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Boundary:</b> cause 11 handoff<br><b>Owner:</b> Okapi, below <code>#[entry]</code></div>
+  </header>
+
+  <div class="crumb"><b>CLINT</b> level<span class="sep">vs</span><b>PLIC</b> level<span class="sep">·</span>who handles what, and where the seam is</div>
+  <div class="arch">
+    <div class="tier">
+      <div class="tier-label">Hardware</div>
+      <div class="tier-boxes">
+        <div class="abox hw">
+          <div class="abox-t">Device sources</div>
+          <div class="abox-d">UART, GPIO, timers, DMA … 50+ lines wired into the Andes PLIC gateway, each with its own ID.</div>
+        </div>
+        <div class="abox hw">
+          <div class="abox-t">Andes PLIC + PLIC_SW</div>
+          <div class="abox-d">Priority / pending / enable / threshold / claim-complete registers at a <b>vendor base address</b>. <code>PLIC_SW</code> handles software &amp; IPI interrupts.</div>
+        </div>
+        <div class="abox hw">
+          <div class="abox-t">Core CLINT lines</div>
+          <div class="abox-d">PLIC output drives exactly one core line: <code>MachineExternal</code>. Timer/software arrive on their own lines.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier-arr">↑</div>
+
+    <div class="tier">
+      <div class="tier-label">riscv-rt<br><span style="font-weight:400;text-transform:none;color:var(--fg-faint)">(keep as-is)</span></div>
+      <div class="tier-boxes">
+        <div class="abox crate">
+          <div class="abox-t">Reset &amp; runtime init</div>
+          <div class="abox-d"><code>_start</code> → stack ptr → clear <code>.bss</code> → copy <code>.data</code> → <code>_setup_interrupts</code> → <code>#[entry]</code>.</div>
+        </div>
+        <div class="abox crate">
+          <div class="abox-t">Trap entry + <code>mcause</code> decode</div>
+          <div class="abox-d"><code>start_trap_rust</code> splits exception vs. interrupt and calls <code>_dispatch_core_interrupt(code)</code>.</div>
+        </div>
+        <div class="abox entry">
+          <div class="abox-t">⟵ seam: cause 11</div>
+          <div class="abox-d">Hands us <code>MachineExternal</code> and knows nothing further. <b>Everything right of here is Okapi.</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tier-arr">↑</div>
+
+    <div class="tier">
+      <div class="tier-label">Okapi<br><span style="font-weight:400;text-transform:none;color:var(--fg-faint)">(ours to write)</span></div>
+      <div class="tier-boxes">
+        <div class="abox okapi">
+          <div class="abox-t"><code>arch/trap.rs</code></div>
+          <div class="abox-d">Claims from the PLIC in a loop, dispatches, completes. Owns nesting discipline.</div>
+        </div>
+        <div class="abox okapi">
+          <div class="abox-t"><code>drivers/plic.rs</code></div>
+          <div class="abox-d">Register offsets, priority, threshold, claim/complete. Knows nothing but the hardware.</div>
+        </div>
+        <div class="abox okapi">
+          <div class="abox-t"><code>irq.rs</code></div>
+          <div class="abox-d">Kernel-facing API: <code>register</code>, <code>mask</code>, <code>unmask</code>. Never names the PLIC.</div>
+        </div>
+        <div class="abox okapi">
+          <div class="abox-t"><code>arch/andes.rs</code></div>
+          <div class="abox-d">Vendor CSRs: <code>mxstatus</code>, <code>mmisc_ctl</code> — the non-standard half.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i style="background:var(--fg-faint)"></i>Hardware</span>
+      <span><i style="background:var(--accent-2)"></i>riscv-rt — keep unchanged</span>
+      <span><i style="background:var(--accent)"></i>Handoff seam (cause 11)</span>
+      <span><i style="background:var(--up)"></i>Okapi — new code for this feature</span>
+    </div>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (2/9): layer map &amp; the cause-11 seam · slide 8 of 15</div>
+    <div class="foot-l">riscv-rt routes <i>core</i> interrupts; the PLIC demultiplexes <i>device</i> interrupts behind one of them</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Option analysis — four ways to get a PLIC, scored</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Chosen:</b> option C (own module)<br><b>Rejected:</b> A, B, D</div>
+  </header>
+
+  <div class="crumb"><b>options</b><span class="sep">·</span>fork riscv-rt <span class="sep">/</span> generic crate <span class="sep">/</span> own module <span class="sep">/</span> vendor C BSP</div>
+  <div class="cmp">
+    <table class="cmp-t">
+      <thead>
+        <tr><th>Option</th><th>What it means</th><th>Andes&nbsp;fit</th><th>Cost &amp; risk</th><th>Call</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A · Fork / extend <code>riscv-rt</code></td>
+          <td>Add PLIC support upstream or in a vendored fork, so the runtime does device routing too.</td>
+          <td class="n">Wrong layer</td>
+          <td>Permanent rebase burden against 0.18+; the crate deliberately has no device-IRQ model, so we'd be pushing against its design, not extending it.</td>
+          <td class="n">No</td>
+        </tr>
+        <tr>
+          <td>B · Generic PLIC crate</td>
+          <td>Pull an existing SiFive-style PLIC crate and configure a base address.</td>
+          <td class="n">Partial</td>
+          <td>Models the <i>standard</i> register map only: no <code>PLIC_SW</code>, no preemptive-priority nesting, no vendor CSRs. We fight its abstraction, then write the Andes parts anyway.</td>
+          <td class="n">No</td>
+        </tr>
+        <tr class="hl">
+          <td>C · Own module in Okapi</td>
+          <td><code>drivers/plic.rs</code> + <code>irq.rs</code>, ~150 lines of MMIO behind a kernel-facing API.</td>
+          <td class="y">Exact</td>
+          <td>Zero new dependencies. We own the nesting discipline and can shape the API around the scheduler. Cost is writing and testing the register map — which option B needs too.</td>
+          <td class="y">Yes</td>
+        </tr>
+        <tr>
+          <td>D · Bind to Andes C BSP</td>
+          <td>FFI into AndeSight's <code>nds_</code> PLIC routines.</td>
+          <td class="y">Exact</td>
+          <td>Drags a C toolchain and build system into the kernel, plus <code>unsafe</code> FFI at the hottest path in the system. Useful as a <b>reference</b> for register offsets, not as a runtime dependency.</td>
+          <td class="n">No</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (3/9): option analysis · slide 9 of 15</div>
+    <div class="foot-l">B and C both require writing the Andes-specific half — only C avoids paying for an abstraction we discard</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Standard PLIC vs. Andes PLIC — the differences that decide it</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Spec:</b> RISC-V PLIC<br><b>Reality:</b> AndeStar V5 / N25F</div>
+  </header>
+
+  <div class="crumb"><b>why a generic crate does not fit</b><span class="sep">·</span>four concrete divergences</div>
+  <div class="twocol">
+    <div class="col">
+      <div class="col-h"><code>Standard PLIC</code> <span class="tag">what crates model</span></div>
+      <div class="mini">
+        <div class="mini-t">Single controller</div>
+        <div class="mini-d">One PLIC instance. Software interrupts / IPIs are the CLINT's problem, via <code>msip</code>.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Canonical base address</div>
+        <div class="mini-d">SiFive-derived maps put it at <code>0x0C00_0000</code>; crates frequently hardcode or default to it.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Flat priority, no nesting</div>
+        <div class="mini-d">Per-source priority + per-context threshold gate <i>whether</i> an IRQ is presented. The spec says nothing about preempting a handler that is already running — nesting is left entirely to software.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Standard CSRs only</div>
+        <div class="mini-d"><code>mstatus</code>, <code>mie</code>, <code>mip</code>, <code>mcause</code>, <code>mtvec</code>. Nothing vendor-specific.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-h warn"><code>Andes PLIC</code> <span class="tag">what N25F actually has</span></div>
+      <div class="mini">
+        <div class="mini-t">PLIC + PLIC_SW pair</div>
+        <div class="mini-d">A second controller, <code>PLIC_SW</code>, dedicated to software/IPI interrupts — its own base address and register block. A standard-PLIC abstraction has no slot for it.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Vendor base addresses</div>
+        <div class="mini-d">Comes from the <b>core configuration</b>, not the spec. Must be read off the AndeSight BSP / <code>nds_</code> headers for our specific build.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Preemptive priority / nested IRQs</div>
+        <div class="mini-d">Andes adds a hardware-assisted nesting scheme via vendor CSRs. The discipline — save <code>mepc</code>/<code>mstatus</code>/<code>mcause</code>, re-enable, claim, complete, restore — is <b>the vendor's</b>, not the spec's.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Vendor CSRs in the hot path</div>
+        <div class="mini-d"><code>mxstatus</code> for the AndeStar extensions, <code>mmisc_ctl</code> for interrupt behaviour (e.g. vectored-plus). Touching these is mandatory, and no generic crate exposes them.</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (4/9): standard vs. Andes divergences · slide 10 of 15</div>
+    <div class="foot-l">any generic crate gives us the left column and leaves the right column unwritten</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Dependency impact — what changes in <code>Cargo.toml</code></div>
+      </div>
+    </div>
+    <div class="hsub"><b>New dependencies:</b> none<br><b>Kept:</b> riscv · riscv-rt · panic-halt</div>
+  </header>
+
+  <div class="crumb"><b>src/okapi/Cargo.toml</b><span class="sep">·</span>before → after<span class="sep">·</span>riscv 0.16 already covers it</div>
+  <div class="twocol">
+    <div class="col">
+      <div class="col-h ok">Manifest <span class="tag">unchanged</span></div>
+      <div class="mini">
+        <div class="mini-t">Current — and final</div>
+        <pre>[dependencies]
+riscv      = "0.16"   # CSR access
+riscv-rt   = "0.18"   # startup + trap entry
+panic-halt = "0.2"</pre>
+        <div class="mini-d" style="margin-top:7px">No additions. The PLIC is new <i>code</i>, not a new <i>dependency</i>.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Why <code>riscv</code> 0.16 is enough</div>
+        <div class="mini-d">It already ships the CSR primitives the driver needs, plus the global machine-mode mask:</div>
+        <pre>riscv::interrupt::machine::{
+    enable, disable, free
+};
+riscv::register::{mstatus, mie, mcause};</pre>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Vendor CSRs</div>
+        <div class="mini-d"><code>mxstatus</code> / <code>mmisc_ctl</code> are not in <code>riscv</code>. Reach them with raw <code>csrr</code>/<code>csrw</code> in <code>arch/andes.rs</code> — a handful of lines, no crate required.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-h warn">If a flag becomes necessary <span class="tag">only then</span></div>
+      <div class="mini">
+        <div class="mini-t">Supplying our own dispatch</div>
+        <div class="mini-d">To replace the generated core-interrupt table entirely (see slide 6), enable <code>custom-interrupts</code> and define the extern:</div>
+        <pre>[dependencies.riscv-rt]
+version  = "0.18"
+features = ["custom-interrupts"]</pre>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Not needed for the PLIC alone</div>
+        <div class="mini-d">The PLIC sits <b>behind</b> <code>MachineExternal</code>. If we are happy letting <code>riscv-rt</code> route core causes normally, the <code>#[core_interrupt]</code> macro is sufficient and no feature flag changes.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">Rule of thumb</div>
+        <div class="mini-d">Add the flag when we want to own <i>core-cause</i> routing (AndeStar vectoring). Keep it off while we only own <i>device</i> routing.</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (5/9): dependency impact · slide 11 of 15</div>
+    <div class="foot-l">the cheapest dependency decision available: zero new crates, zero new build complexity</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Module layout — establish the layering now, not later</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Today:</b> one <code>main.rs</code><br><b>Rule:</b> only <code>plic.rs</code> knows offsets</div>
+  </header>
+
+  <div class="crumb"><b>src/okapi/src/</b><span class="sep">·</span>proposed tree<span class="sep">·</span>one boundary that matters</div>
+  <div class="twocol">
+    <div class="col">
+      <div class="col-h">Proposed tree <span class="tag">new files</span></div>
+      <div class="tree">src/okapi/src/
+├── <b>main.rs</b>              <span class="c"># #[entry], kernel init</span>
+├── <b>arch/</b>
+│   ├── mod.rs
+│   ├── <span class="own">trap.rs</span>           <span class="c"># MachineExternal → claim loop</span>
+│   └── <span class="own">andes.rs</span>          <span class="c"># mxstatus, mmisc_ctl (vendor CSRs)</span>
+├── <b>drivers/</b>
+│   └── <span class="own">plic.rs</span>           <span class="c"># Andes PLIC register map only</span>
+└── <span class="own">irq.rs</span>                <span class="c"># kernel-facing IRQ API</span>
+</div>
+      <div class="mini">
+        <div class="mini-t">The one boundary that matters</div>
+        <div class="mini-d"><code>drivers/plic.rs</code> knows register offsets <b>and nothing else</b>. <code>irq.rs</code> is what the rest of Okapi calls, and it <b>never mentions the PLIC by name</b>.</div>
+        <div class="mini-d" style="margin-top:6px">Consequence: moving to a different Andes part — or adding <code>PLIC_SW</code> for IPIs on a multicore variant — changes <b>one file</b>.</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-h">Responsibility split <span class="tag">per file</span></div>
+      <div class="mini">
+        <div class="mini-t"><code>drivers/plic.rs</code> <span class="pill own">hardware</span></div>
+        <div class="mini-d">Volatile MMIO against the Andes map: <code>priority[]</code>, <code>pending[]</code>, <code>enable[]</code>, <code>threshold</code>, <code>claim</code>/<code>complete</code>. No kernel types, no handler table.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t"><code>irq.rs</code> <span class="pill own">policy</span></div>
+        <div class="mini-d">Handler registration table, <code>mask</code>/<code>unmask</code>, dispatch by IRQ id. The scheduler and drivers talk to <i>this</i>.</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t"><code>arch/trap.rs</code> <span class="pill own">glue</span></div>
+        <div class="mini-d">Bridges <code>riscv-rt</code>'s core-interrupt macro to <code>irq::dispatch</code>, and owns nesting (save/restore of <code>mepc</code>, <code>mstatus</code>, <code>mcause</code>).</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t"><code>arch/andes.rs</code> <span class="pill own">vendor</span></div>
+        <div class="mini-d">Raw CSR access for AndeStar-only bits. Isolated so a non-Andes port can swap this file alone.</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (6/9): module layout &amp; responsibilities · slide 12 of 15</div>
+    <div class="foot-l">now is the moment to set the layering — Okapi is still a single file, so it costs nothing</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">The dispatch path — <code>MachineExternal</code> to device handler</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Key detail:</b> claim in a <code>while</code> loop<br><b>Not:</b> a single claim per trap</div>
+  </header>
+
+  <div class="crumb"><b>arch/trap.rs</b><span class="sep">→</span><b>drivers/plic.rs</b><span class="sep">→</span><b>irq.rs</b><span class="sep">·</span>the hot path</div>
+  <div class="chain">
+    <div class="cstep">
+      <div class="cstep-badge">1</div>
+      <div class="cstep-body">
+        <div class="cstep-t">Device asserts → PLIC gates it → core takes cause 11</div>
+        <div class="cstep-d">The PLIC presents the IRQ only if its <code>priority</code> exceeds the context <code>threshold</code>. <code>riscv-rt</code>'s <code>start_trap_rust</code> decodes <code>mcause</code> and routes to the <code>MachineExternal</code> handler.</div>
+      </div>
+    </div>
+    <div class="cstep-connector">↓</div>
+
+    <div class="cstep">
+      <div class="cstep-badge">2</div>
+      <div class="cstep-body">
+        <div class="cstep-t">Okapi's handler claims in a loop <code>arch/trap.rs</code></div>
+        <div class="cstep-d">Several sources can be pending behind one core line, and the PLIC deasserts only once all are completed. A single <code>claim()</code> per trap would silently drop the rest — so loop until the PLIC returns id <code>0</code>.</div>
+        <pre>#[riscv_rt::core_interrupt(CoreInterrupt::MachineExternal)]
+fn machine_external() {
+    // loop, not a single claim: PLIC can have several pending
+    while let Some(irq) = plic::claim() {
+        irq::dispatch(irq);
+        plic::complete(irq);
+    }
+}</pre>
+        <div class="src">note: requires the <code>CoreInterrupt</code> enum from <code>riscv</code>; see slide 6 for the <code>custom-interrupts</code> variant</div>
+      </div>
+    </div>
+    <div class="cstep-connector">↓</div>
+
+    <div class="cstep">
+      <div class="cstep-badge">3</div>
+      <div class="cstep-body">
+        <div class="cstep-t">Claim / complete handshake <code>drivers/plic.rs</code></div>
+        <div class="cstep-d">Reading the claim register atomically returns the highest-priority pending id <i>and</i> clears its pending bit. Writing the same id back to the complete register tells the gateway it may forward the next one. <b>Claim id 0 means nothing pending</b> — that is the loop's exit condition.</div>
+        <pre>pub fn claim() -&gt; Option&lt;u32&gt; {
+    let id = unsafe { read_volatile(CLAIM) };
+    (id != 0).then_some(id)      // 0 == no interrupt pending
+}
+pub fn complete(irq: u32) {
+    unsafe { write_volatile(CLAIM, irq) }   // same register
+}</pre>
+      </div>
+    </div>
+    <div class="cstep-connector">↓</div>
+
+    <div class="cstep">
+      <div class="cstep-badge">4</div>
+      <div class="cstep-body">
+        <div class="cstep-t">Dispatch to the registered handler <code>irq.rs</code></div>
+        <div class="cstep-d">Index the handler table by IRQ id and call it. This is the layer the scheduler hooks for timer-tick preemption, and the only layer device drivers ever see.</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (7/9): the dispatch path · slide 13 of 15</div>
+    <div class="foot-l">claim-in-a-loop and &ldquo;id 0 == none&rdquo; are the two details that cause lost interrupts if missed</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Unknowns to pin down <b>before</b> writing register offsets</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Source of truth:</b> AndeSight BSP<br><b>Not:</b> the RISC-V PLIC spec</div>
+  </header>
+
+  <div class="crumb"><b>verify first</b><span class="sep">·</span>core configuration, not specification<span class="sep">·</span>blocks correct offsets</div>
+  <div class="twocol">
+    <div class="col">
+      <div class="col-h warn">Must confirm <span class="tag">blocking</span></div>
+      <div class="ckl">
+        <div class="ck">
+          <div class="ck-box"></div>
+          <div class="ck-b">
+            <div class="ck-t">PLIC base address</div>
+            <div class="ck-d">For <i>our specific</i> N25F core build. Comes from the Andes core configuration / <code>nds_</code> BSP headers — <b>not</b> from the spec, and not SiFive's <code>0x0C00_0000</code>.</div>
+          </div>
+        </div>
+        <div class="ck">
+          <div class="ck-box"></div>
+          <div class="ck-b">
+            <div class="ck-t"><code>PLIC_SW</code> present? And its base</div>
+            <div class="ck-d">Whether this core config includes the software-interrupt controller at all. Determines if <code>irq.rs</code> needs an IPI path now or later.</div>
+          </div>
+        </div>
+        <div class="ck">
+          <div class="ck-box"></div>
+          <div class="ck-b">
+            <div class="ck-t">Vectored or non-vectored trap entry</div>
+            <div class="ck-d">Whether the core was configured with <code>mtvec.MODE=1</code>. This decides whether <code>riscv-rt</code>'s <code>v-trap</code> feature should be <b>on</b> — and it changes the shape of <code>arch/trap.rs</code>.</div>
+          </div>
+        </div>
+        <div class="ck">
+          <div class="ck-box"></div>
+          <div class="ck-b">
+            <div class="ck-t">Max IRQ id / source count</div>
+            <div class="ck-d">Sizes the handler table in <code>irq.rs</code> and the enable-bit arrays in <code>plic.rs</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-h">Where to look <span class="tag">and how to proceed</span></div>
+      <div class="mini">
+        <div class="mini-t">Sources, in order of authority</div>
+        <div class="mini-d">1 · Andes core configuration report for this SoC build<br>
+          2 · AndeSight BSP <code>nds_</code> headers (PLIC base macros)<br>
+          3 · N25F datasheet / AndeStar V5 manual<br>
+          4 · existing C BSP init code — read it as a <b>reference</b>, not a dependency (slide 9, option D)</div>
+      </div>
+      <div class="mini">
+        <div class="mini-t">How this unblocks work today</div>
+        <div class="mini-d">None of these block the <i>structure</i>. Scaffold the modules with the standard register map and the base address as a single <code>const</code>:</div>
+        <pre>// drivers/plic.rs
+// TODO(bsp): confirm against AndeSight nds_ headers
+const PLIC_BASE: usize = 0xE400_0000; // placeholder
+
+const PRIORITY:  usize = PLIC_BASE + 0x0000_0000;
+const PENDING:   usize = PLIC_BASE + 0x0000_1000;
+const ENABLE:    usize = PLIC_BASE + 0x0000_2000;
+const THRESHOLD: usize = PLIC_BASE + 0x0020_0000;
+const CLAIM:     usize = PLIC_BASE + 0x0020_0004;</pre>
+        <div class="mini-d" style="margin-top:6px">That compiles and links now; correcting the addresses later is a one-line change.</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (8/9): unknowns &amp; where they come from · slide 14 of 15</div>
+    <div class="foot-l">offsets above are the standard layout as a starting point — every one needs BSP confirmation</div>
+  </footer>
+</div>
+
+<div class="slide">
+  <header>
+    <div class="brand">
+      <svg class="okapi-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="30" cy="30" rx="19" ry="13" fill="#6b4a30"/>
+        <path d="M46 26 L58 20 L57 26 L47 31 Z" fill="#6b4a30"/>
+        <ellipse cx="55" cy="22" rx="4.5" ry="6" transform="rotate(35 55 22)" fill="#3a2a1c"/>
+        <ellipse cx="54" cy="16" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <ellipse cx="59" cy="17" rx="1.6" ry="4" fill="#3a2a1c"/>
+        <g stroke="#e8d9c5" stroke-width="2.6" stroke-linecap="round">
+          <line x1="18" y1="40" x2="14" y2="58"/>
+          <line x1="26" y1="42" x2="23" y2="59"/>
+          <line x1="36" y1="42" x2="38" y2="59"/>
+          <line x1="43" y1="40" x2="47" y2="58"/>
+        </g>
+        <g stroke="#3a2a1c" stroke-width="2" stroke-linecap="round">
+          <line x1="16.5" y1="46" x2="20" y2="46"/>
+          <line x1="15.5" y1="51" x2="19" y2="51"/>
+          <line x1="24.5" y1="48" x2="28" y2="48"/>
+          <line x1="23.5" y1="53" x2="27" y2="53"/>
+          <line x1="35" y1="48" x2="38.5" y2="48"/>
+          <line x1="35.7" y1="53" x2="39.2" y2="53"/>
+          <line x1="42.5" y1="46" x2="46" y2="46"/>
+          <line x1="43.5" y1="51" x2="47" y2="51"/>
+        </g>
+        <ellipse cx="14" cy="30" rx="2" ry="3" fill="#241a11"/>
+      </svg>
+      <div>
+        <h1>Okapi <span>RTOS</span></h1>
+        <div class="sub">Decision summary &amp; next actions</div>
+      </div>
+    </div>
+    <div class="hsub"><b>Status:</b> decided, ready to scaffold<br><b>Blocking:</b> BSP base addresses only</div>
+  </header>
+
+  <div class="crumb"><b>summary</b><span class="sep">·</span>what we do, what we skip, what comes next</div>
+  <div class="verdict">
+    <div class="verdict-k">Decision</div>
+    <div class="verdict-v">Andes PLIC support lives in Okapi as <code>drivers/plic.rs</code> + <code>irq.rs</code>, behind <code>riscv-rt</code>'s <code>MachineExternal</code> seam. <em>No new dependencies.</em></div>
+  </div>
+
+  <div class="threecol">
+    <div class="mini">
+      <div class="mini-t">Do <span class="pill ok">chosen</span></div>
+      <div class="mini-d">
+        • Keep <code>riscv</code> 0.16 and <code>riscv-rt</code> 0.18 as-is<br><br>
+        • Write <code>drivers/plic.rs</code> — register map only<br><br>
+        • Write <code>irq.rs</code> — handler table, mask/unmask, the API the kernel sees<br><br>
+        • Write <code>arch/trap.rs</code> — claim-loop + nesting discipline<br><br>
+        • Isolate vendor CSRs in <code>arch/andes.rs</code>
+      </div>
+    </div>
+    <div class="mini">
+      <div class="mini-t">Don't <span class="pill warn">rejected</span></div>
+      <div class="mini-d">
+        • Don't fork or patch <code>riscv-rt</code> — wrong layer, permanent rebase cost<br><br>
+        • Don't adopt a generic/SiFive PLIC crate — models the standard map, gives nothing for <code>PLIC_SW</code>, preemptive priority, or vendor CSRs<br><br>
+        • Don't FFI into the C BSP at runtime — read it for offsets instead<br><br>
+        • Don't enable <code>custom-interrupts</code> yet — not needed for device routing
+      </div>
+    </div>
+    <div class="mini">
+      <div class="mini-t">Next <span class="pill ext">actions</span></div>
+      <div class="mini-d">
+        <b>1 ·</b> Pull PLIC (and <code>PLIC_SW</code>) base addresses from the AndeSight BSP<br><br>
+        <b>2 ·</b> Confirm <code>mtvec.MODE</code> → decide on <code>v-trap</code><br><br>
+        <b>3 ·</b> Scaffold the module tree with the standard map + placeholder <code>const</code>s, so it compiles and links today<br><br>
+        <b>4 ·</b> Bring up one real source end-to-end (UART RX) as the proof<br><br>
+        <b>5 ·</b> Then wire the machine timer into the scheduler tick
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="foot-l"><b>Okapi RTOS</b> — PLIC decision (9/9): summary &amp; next actions · slide 15 of 15</div>
+    <div class="foot-l">the interrupt controller is a kernel subsystem — owning it is the point, not the cost</div>
   </footer>
 </div>
 
